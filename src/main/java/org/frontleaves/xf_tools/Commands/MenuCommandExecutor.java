@@ -49,7 +49,10 @@ public class MenuCommandExecutor implements CommandExecutor {
                         commandSender.sendMessage(String.format("%s§r%s §r§c参数不正确，请输入 §6/xf-tool help §c查看指令帮助", Tools.XF_Prefix, Tools.XF_PrefixArrow));
                     }
                 } else if (Objects.equals(strings[0], "setting")) {
-
+                    commandSender.sendMessage(String.format("§7§l§m==]========== %s§7§l§m ==========[==",Tools.XF_Prefix));
+                    commandSender.sendMessage("§6/xf-tool update §7- 查看是否有可选更新");
+                    commandSender.sendMessage("§6/xf-tool version §7- 查看插件版本");
+                    commandSender.sendMessage(String.format("§7§l§m==]========== %s§7§l§m ==========[==",Tools.XF_Prefix));
                 }
             }
         }
