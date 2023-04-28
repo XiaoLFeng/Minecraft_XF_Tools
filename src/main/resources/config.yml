@@ -1,0 +1,29 @@
+#################################
+# 筱锋工具箱配置文件                #
+# 作者：筱锋xiao_lfeng            #
+# 博客：https://www.x-lf.com/    #
+# 版本：1.0.0-Alpha              #
+#################################
+
+###
+# 基础配置信息
+###
+# 插件前缀显示
+Global_Prefix: "§2XF§b§lTools"
+
+###
+# OP管理
+###
+# 赋予OP密码
+OP_Password: 20040227
+
+###
+# 数据库配置信息
+###
+Mysql_Opened: false
+Mysql_Host: "localhost"
+Mysql_Port: 3306
+Mysql_DataBase: ""
+Mysql_User: ""
+Mysql_Password: ""
+Mysql_SSL: false
