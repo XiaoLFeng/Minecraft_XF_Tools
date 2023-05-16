@@ -15,18 +15,22 @@ public class DropEvent implements Listener {
 
     @EventHandler
     public void Drop(PlayerDropItemEvent Player) {
-        int i = 0;
-        Object[] User = new Object[2];
-        for (; Tools.XF_Player.get(i).length != 0; i++) {
-            User = Tools.XF_Player.get(i);
-            if (User[0] == Player.getPlayer().getName()) {
-                break;
+        if (Tools.getConfig().getBoolean("Plugin_Drop")) {
+            int i = 0;
+            Object[] User = new Object[2];
+            for (; Tools.XF_Player.get(i).length != 0; i++) {
+                User = Tools.XF_Player.get(i);
+                if (User[0] == Player.getPlayer().getName()) {
+                    break;
+                }
             }
-        }
-        if ((int) User[1] == 0) {
-            Player.setCancelled(true);
-            if (Player.isCancelled())
-                Player.getPlayer().sendMessage(String.format("%s§r%s §r§c丢东西保护，如果确定需要丢物品输入 §6/xf-drop §c开启丢物品", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+            if ((int) User[1] == 0) {
+                Player.setCancelled(true);
+                if (Player.isCancelled())
+                    Player.getPlayer().sendMessage(String.format("%s§r%s §r§c丢东西保护，如果确定需要丢物品输入 §6/xf-drop §c开启丢物品", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+            }
+        } else {
+            Player.getPlayer().sendMessage(String.format("%s§r%s §r§c服务器没有开启服务器掉落保护", Tools.XF_Prefix, Tools.XF_PrefixArrow));
         }
     }
 }

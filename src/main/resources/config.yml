@@ -18,12 +18,26 @@ Global_Prefix: "§2XF§b§lTools"
 OP_Password: 20040227
 
 ###
+# 插件管理
+###
+# 是否开启凋落物保护
+Plugin_Drop: true
+# 是否开启违禁物品检测
+Plugin_BanBlock: true
+BanBlock_List:
+  - "BEDROCK"
+  - "COMMAND_BLOCK"
+# 是否开启玩家指令记录
+Plugin_CommandLog: true
+# 是否开启管理员指令记录
+Plugin_CommandAdminLog: true
+
+###
 # 数据库配置信息
 ###
-Mysql_Opened: false
+Mysql_Open: false
 Mysql_Host: "localhost"
 Mysql_Port: 3306
-Mysql_DataBase: ""
 Mysql_User: ""
 Mysql_Password: ""
 Mysql_SSL: false

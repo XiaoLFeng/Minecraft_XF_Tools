@@ -24,7 +24,7 @@ public class MenuCommandExecutor implements CommandExecutor {
                 sender.sendMessage(String.format("§7§l§m==]==========§r %s §7§l§m==========[==",Tools.XF_Prefix));
                 sender.sendMessage(String.format("§3筱锋工具箱[XF_Tool]（版本号：%s）", Tools.XF_Version));
                 sender.sendMessage(String.format("§3作者：%s", Tools.XF_Author));
-                sender.sendMessage("§3博客：§ehttps://www.blog.x-lf.com/");
+                sender.sendMessage("§3博客：§ehttps://blog.x-lf.com/");
                 sender.sendMessage("§2输入 §6/xf-tool help §2 查看插件帮助吧");
                 sender.sendMessage(String.format("§7§l§m==]==========§r %s §7§l§m==========[==",Tools.XF_Prefix));
             } else {
@@ -59,10 +59,14 @@ public class MenuCommandExecutor implements CommandExecutor {
                 } else if (Objects.equals(strings[0], "update"))
                     sender.sendMessage(String.format("%s§r%s §r§c很抱歉，我还没有做接口哈！", Tools.XF_Prefix, Tools.XF_PrefixArrow));
                 else if (Objects.equals(strings[0], "drop")) {
-                    sender.sendMessage(String.format("§7§l§m==]==========§r %s §7§l§m==========[==",Tools.XF_Prefix));
-                    sender.sendMessage("§6/xf-drop §7- 解除丢弃物品");
-                    sender.sendMessage("§6/xf-drop <on or off> §7- 设置是否允许丢弃物品");
-                    sender.sendMessage(String.format("§7§l§m==]==========§r %s §7§l§m==========[==",Tools.XF_Prefix));
+                    if (Tools.getConfig().getBoolean("Plugin_Drop")) {
+                        sender.sendMessage(String.format("§7§l§m==]==========§r %s §7§l§m==========[==",Tools.XF_Prefix));
+                        sender.sendMessage("§6/xf-drop §7- 解除丢弃物品");
+                        sender.sendMessage("§6/xf-drop <on or off> §7- 设置是否允许丢弃物品");
+                        sender.sendMessage(String.format("§7§l§m==]==========§r %s §7§l§m==========[==",Tools.XF_Prefix));
+                    } else {
+                        sender.sendMessage(String.format("%s§r%s §r§c服务器没有开启服务器掉落保护", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+                    }
                 } else if (Objects.equals(strings[0],"version"))
                     sender.sendMessage(String.format("%s§r%s §r§3版本号：%s", Tools.XF_Prefix, Tools.XF_PrefixArrow,Tools.XF_Version));
                 else sender.sendMessage(String.format("%s§r%s §r§c参数错误请输入 §6/xf-tool help §c查看帮助", Tools.XF_Prefix, Tools.XF_PrefixArrow));
