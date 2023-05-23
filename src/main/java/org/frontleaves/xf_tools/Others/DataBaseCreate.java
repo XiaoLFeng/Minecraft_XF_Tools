@@ -7,58 +7,67 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
+/**
+ * @author 筱锋xiao_lfeng
+ * @since v1.0.0-Alpha
+ */
 public class DataBaseCreate {
 
-    private final XF_Tools Tools;
+    private final XF_Tools tools;
 
-    public DataBaseCreate(XF_Tools Tools) {
-        this.Tools = Tools;
+    public DataBaseCreate(XF_Tools plugins) {
+        this.tools = plugins;
     }
 
-    public void CreateTable() {
+    public void createTable() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Tools.SqlConn = DriverManager.getConnection("jdbc:mysql://" + Tools.getConfig().getString("Mysql_Host") + ":" + Tools.getConfig().getInt("Mysql_Port") + "/?useSSL=" + Tools.getConfig().getString("Mysql_SSL"), Tools.getConfig().getString("Mysql_User"), Tools.getConfig().getString("Mysql_Password"));
-            Tools.Stmt = Tools.SqlConn.createStatement();
-            Tools.UseSQL = true;
-            Tools.getLogger().info("数据库已成功连接！");
+            tools.sqlConn = DriverManager.getConnection("jdbc:mysql://" + tools.getConfig().getString("Mysql_Host") + ":" + tools.getConfig().getInt("Mysql_Port") + "/?useSSL=" + tools.getConfig().getString("Mysql_SSL"), tools.getConfig().getString("Mysql_User"), tools.getConfig().getString("Mysql_Password"));
+            tools.stmt = tools.sqlConn.createStatement();
+            tools.useSql = true;
+            tools.getLogger().info("数据库已成功连接！");
         } catch (ClassNotFoundException e) {
-            Tools.UseSQL = false;
+            tools.useSql = false;
         } catch (SQLException e) {
-            Tools.getLogger().warning("数据库无法连接，已禁止使用数据库！");
-            Tools.UseSQL = false;
+            tools.getLogger().warning("数据库无法连接，已禁止使用数据库！");
+            tools.useSql = false;
         }
 
-        if (this.Create()) {
-            Tools.getLogger().info("创建数据表");
-            Tools.UseSQL = true;
-        } else Tools.UseSQL = false;
+        if (this.create()) {
+            tools.getLogger().info("创建数据表");
+            tools.useSql = true;
+        } else {
+            tools.useSql = false;
+        }
     }
 
-    public boolean Create() {
+    public boolean create() {
         try {
-            if (Tools.Stmt.executeQuery("SELECT TABLE_NAME,TABLE_SCHEMA FROM information_schema.TABLES WHERE TABLE_SCHEMA='xf_tools' AND TABLE_NAME LIKE '%xftls%'").next()) {
-                Tools.getLogger().info("2");
-                ResultSet Result_Table = Tools.Stmt.executeQuery("SELECT TABLE_NAME,TABLE_SCHEMA FROM  information_schema.TABLES WHERE TABLE_SCHEMA='xf_tools' AND TABLE_NAME LIKE '%xftls%'");
-                while (Result_Table.next()) {
-                    if (!Objects.equals(Result_Table.getString("TABLE_NAME"), TABLE_NAME.xftls_commandslogs.name())) {
-                        if (!CreateCommandsLogs()) Tools.getLogger().warning("数据表 xftls_commandslogs 创建失败");
+            if (tools.stmt.executeQuery("SELECT TABLE_NAME,TABLE_SCHEMA FROM information_schema.TABLES WHERE TABLE_SCHEMA='xf_tools' AND TABLE_NAME LIKE '%xftls%'").next()) {
+                tools.getLogger().info("2");
+                ResultSet resultTable = tools.stmt.executeQuery("SELECT TABLE_NAME,TABLE_SCHEMA FROM  information_schema.TABLES WHERE TABLE_SCHEMA='xf_tools' AND TABLE_NAME LIKE '%xftls%'");
+                while (resultTable.next()) {
+                    if (!Objects.equals(resultTable.getString("TABLE_NAME"), TABLE_NAME.xftls_commandslogs.name())) {
+                        if (!createCommandsLogs()) {
+                            tools.getLogger().warning("数据表 xftls_commandslogs 创建失败");
+                        }
                         return true;
                     }
                 }
             } else {
-                Tools.getLogger().info("20");
-                if (!Tools.Stmt.executeQuery("SELECT * FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='xf_tools'").next()) {
-                    if (Tools.Stmt.execute("CREATE SCHEMA xf_tools")) Tools.getLogger().info("数据库 xf_tools 创建完毕");
-                    else {
-                        Tools.getLogger().info("数据库创建失败，数据库禁用");
-                        Tools.UseSQL = false;
+                tools.getLogger().info("20");
+                if (!tools.stmt.executeQuery("SELECT * FROM information_schema.SCHEMATA WHERE SCHEMA_NAME='xf_tools'").next()) {
+                    if (tools.stmt.execute("CREATE SCHEMA xf_tools")) {
+                        tools.getLogger().info("数据库 xf_tools 创建完毕");
+                    } else {
+                        tools.getLogger().info("数据库创建失败，数据库禁用");
+                        tools.useSql = false;
                         return false;
                     }
                 }
-                if (!CreateCommandsLogs()) {
-                    Tools.getLogger().warning("数据表 xftls_commandslogs 创建失败，数据库禁用");
-                    Tools.UseSQL = false;
+                if (!createCommandsLogs()) {
+                    tools.getLogger().warning("数据表 xftls_commandslogs 创建失败，数据库禁用");
+                    tools.useSql = false;
                     return false;
                 }
             }
@@ -68,7 +77,7 @@ public class DataBaseCreate {
         return false;
     }
     
-    private boolean CreateCommandsLogs() {
+    private boolean createCommandsLogs() {
         /*Tools.getLogger().info("1");
         // 如果不存在这个数据库，需要创建一个数据库
         try {

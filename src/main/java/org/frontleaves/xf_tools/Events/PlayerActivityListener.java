@@ -6,30 +6,34 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.frontleaves.xf_tools.XF_Tools;
 
+/**
+ * @author 筱锋xiao_lfeng
+ * @since v1.0.0-Alpha
+ */
 public class PlayerActivityListener implements Listener {
 
-    protected XF_Tools Tools;
+    protected XF_Tools tools;
 
-    public PlayerActivityListener(XF_Tools Tools) {
-        this.Tools = Tools;
+    public PlayerActivityListener(XF_Tools tools) {
+        this.tools = tools;
     }
 
     @EventHandler
-    public void onJoinServer(PlayerJoinEvent Player) {
-        Object[] PlayerData = {Player.getPlayer().getName(), 0};
-        Tools.XF_Player.add(PlayerData);
-        Player.setJoinMessage(String.format("§7[§2+§7]§3 %s", Player.getPlayer().getDisplayName()));
+    public void onJoinServer(PlayerJoinEvent player) {
+        Object[] playerData = {player.getPlayer().getName(), 0};
+        tools.xfPlayer.add(playerData);
+        player.setJoinMessage(String.format("§7[§2+§7]§3 %s", player.getPlayer().getDisplayName()));
     }
 
     @EventHandler
-    public void onQuitServer(PlayerQuitEvent Player) {
-        for (int i = 0; Tools.XF_Player.get(i).length != 0; i++) {
-            Object[] User = Tools.XF_Player.get(i);
-            if (User[0] == Player.getPlayer().getName()) {
-                Tools.XF_Player.remove(i);
+    public void onQuitServer(PlayerQuitEvent player) {
+        for (int i = 0; tools.xfPlayer.get(i).length != 0; i++) {
+            Object[] user = tools.xfPlayer.get(i);
+            if (user[0] == player.getPlayer().getName()) {
+                tools.xfPlayer.remove(i);
                 break;
             }
         }
-        Player.setQuitMessage(String.format("§7[§c-§7]§3 %s", Player.getPlayer().getDisplayName()));
+        player.setQuitMessage(String.format("§7[§c-§7]§3 %s", player.getPlayer().getDisplayName()));
     }
 }

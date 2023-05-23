@@ -11,77 +11,81 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.frontleaves.xf_tools.XF_Tools;
 
+/**
+ * @author 筱锋xiao_lfeng
+ * @since v1.0.0-Alpha
+ */
 public class BlockEvent implements Listener {
 
-    protected XF_Tools Tools;
+    protected XF_Tools tools;
 
-    public BlockEvent(XF_Tools Tools) {
-        this.Tools = Tools;
+    public BlockEvent(XF_Tools plugins) {
+        this.tools = plugins;
     }
 
     @EventHandler
-    public void InventoryEvent(InventoryCloseEvent player) {
-        for (String value : Tools.BlockBanList) {
+    public void inventoryEvent(InventoryCloseEvent player) {
+        for (String value : tools.blockBanList) {
             if (!player.getPlayer().isOp()) {
                 // 基岩检测
                 if (player.getPlayer().getInventory().contains(Material.getMaterial(value))) {
                     player.getPlayer().getInventory().remove(Material.getMaterial(value));
-                    player.getPlayer().sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", Tools.XF_Prefix, Tools.XF_PrefixArrow, value));
+                    player.getPlayer().sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", tools.xfPrefix, tools.xfPrefixArrow, value));
                 }
             } else {
-                Tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 从背包获取了 %s", player.getPlayer().getName(), player.getPlayer().getLocation().getWorld().getName(), player.getPlayer().getLocation().getX(), player.getPlayer().getLocation().getY(), player.getPlayer().getLocation().getZ(), value));
+                tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 从背包获取了 %s", player.getPlayer().getName(), player.getPlayer().getLocation().getWorld().getName(), player.getPlayer().getLocation().getX(), player.getPlayer().getLocation().getY(), player.getPlayer().getLocation().getZ(), value));
             }
         }
     }
 
     @EventHandler
-    public void DropEvent(PlayerDropItemEvent player) {
-        for (String value : Tools.BlockBanList) {
+    public void dropEvent(PlayerDropItemEvent player) {
+        for (String value : tools.blockBanList) {
             if (!player.getPlayer().isOp()) {
                 // 基岩检测
                 if (player.getPlayer().getInventory().contains(Material.getMaterial(value))) {
                     player.setCancelled(true);
                     player.getPlayer().getInventory().remove(Material.getMaterial(value));
-                    player.getPlayer().sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", Tools.XF_Prefix, Tools.XF_PrefixArrow, Material.getMaterial(value)));
+                    player.getPlayer().sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", tools.xfPrefix, tools.xfPrefixArrow, Material.getMaterial(value)));
                 }
             } else {
                 Player players = (Player) player;
                 Location playerLocation = players.getLocation();
-                Tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 从丢弃了 %s", players.getDisplayName(), playerLocation.getWorld(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), value));
+                tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 从丢弃了 %s", players.getDisplayName(), playerLocation.getWorld(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), value));
             }
         }
     }
 
 
     @EventHandler
-    public void PickupEvent(EntityPickupItemEvent pickupItemEvent) {
-        for (String value : Tools.BlockBanList) {
+    public void pickupEvent(EntityPickupItemEvent pickupItemEvent) {
+        for (String value : tools.blockBanList) {
             Player entity = (Player) pickupItemEvent.getEntity();
             if (!entity.isOp()) {
                 if (pickupItemEvent.getItem().getItemStack().getType() == Material.getMaterial(value)) {
                     entity.setCanPickupItems(false);
-                    entity.sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", Tools.XF_Prefix, Tools.XF_PrefixArrow, value));
+                    entity.sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", tools.xfPrefix, tools.xfPrefixArrow, value));
                 } else {
                     Location playerLocation = entity.getLocation();
-                    Tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 捡起了 %s%n", entity.getDisplayName(), playerLocation.getWorld(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), value));
+                    tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 捡起了 %s%n", entity.getDisplayName(), playerLocation.getWorld(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), value));
                 }
             }
         }
     }
 
     @EventHandler
-    public void BlockPlaceEvent(BlockPlaceEvent player) {
-        for (String value : Tools.BlockBanList) {
+    public void blockPlaceEvent(BlockPlaceEvent player) {
+        for (String value : tools.blockBanList) {
             if (!player.getPlayer().isOp()) {
                 // 基岩检测
                 if (player.getPlayer().getInventory().contains(Material.getMaterial(value))) {
                     player.setCancelled(true);
                     player.getPlayer().getInventory().remove(Material.getMaterial(value));
-                    player.getPlayer().sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", Tools.XF_Prefix, Tools.XF_PrefixArrow, value));
+                    player.getPlayer().sendMessage(String.format("%s§r%s §r§c这个 %s 你不可以拥有", tools.xfPrefix, tools.xfPrefixArrow, value));
                 } else {
                     Player players = (Player) player;
                     Location playerLocation = players.getLocation();
-                    Tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 位置使用了 %s", players.getDisplayName(), playerLocation.getWorld(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), value));
+                    tools.getLogger().warning(String.format("管理 %s 在 [%s][%s,%s,%s] 位置使用了 %s", players.getDisplayName(), playerLocation.getWorld(), playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), value));
                 }
             }
         }

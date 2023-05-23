@@ -8,31 +8,35 @@ import org.frontleaves.xf_tools.XF_Tools;
 
 import java.util.regex.Pattern;
 
+/**
+ * @author 筱锋xiao_lfeng
+ * @since v1.0.0-Alpha
+ */
 public class CommandEvent implements Listener {
 
-    private final XF_Tools Tools;
+    private final XF_Tools tools;
 
-    public CommandEvent(XF_Tools Tools) {
-        this.Tools = Tools;
+    public CommandEvent(XF_Tools plugins) {
+        this.tools = plugins;
     }
 
     @EventHandler
-    public void PlayerCommandEvent(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
+    public void playerCommandEvent(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
         // 将数据输出并载入数据库
-        if (Tools.UseSQL) {
-
+        if (tools.useSql) {
+            tools.getLogger().warning(String.format("§r玩家 %s 输入了 %s", playerCommandPreprocessEvent.getPlayer().getDisplayName(), playerCommandPreprocessEvent.getMessage()));
         } else {
-            Tools.getLogger().warning(String.format("§r玩家 %s 输入了 %s", playerCommandPreprocessEvent.getPlayer().getDisplayName(), playerCommandPreprocessEvent.getMessage()));
+            tools.getLogger().warning(String.format("§r玩家 %s 输入了 %s", playerCommandPreprocessEvent.getPlayer().getDisplayName(), playerCommandPreprocessEvent.getMessage()));
         }
     }
 
     @EventHandler
-    public void PlayerCommandForDropEvent(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
+    public void playerCommandForDropEvent(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
         // 检查数据内容
-        if (playerCommandPreprocessEvent.getMessage().equals("/drop")) {
+        if ("/drop".equals(playerCommandPreprocessEvent.getMessage())) {
             playerCommandPreprocessEvent.setMessage("/xf-drop off");
         }
-        if (playerCommandPreprocessEvent.getMessage().equals("/drop-on")) {
+        if ("/drop-on".equals(playerCommandPreprocessEvent.getMessage())) {
             playerCommandPreprocessEvent.setMessage("/xf-drop on");
         }
     }
@@ -45,12 +49,12 @@ public class CommandEvent implements Listener {
      * @param playerCommandPreprocessEvent 输入指令的玩家
      */
     @EventHandler
-    public void PlayerCommandForCalcEvent(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
+    public void playerCommandForCalcEvent(PlayerCommandPreprocessEvent playerCommandPreprocessEvent) {
         if (Pattern.matches("^//calc",playerCommandPreprocessEvent.getMessage())) {
             if (playerCommandPreprocessEvent instanceof Player && !playerCommandPreprocessEvent.getPlayer().isOp()) {
                 playerCommandPreprocessEvent.setCancelled(true);
                 if (playerCommandPreprocessEvent.isCancelled()) {
-                    playerCommandPreprocessEvent.getPlayer().sendMessage(String.format("%s§r%s §r§c玩家不能够直接执行此命令！", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+                    playerCommandPreprocessEvent.getPlayer().sendMessage(String.format("%s§r%s §r§c玩家不能够直接执行此命令！", tools.xfPrefix, tools.xfPrefixArrow));
                 }
             }
         }

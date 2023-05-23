@@ -7,34 +7,39 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.frontleaves.xf_tools.XF_Tools;
 
+/**
+ * @author 筱锋xiao_lfeng
+ * @since v1.0.0-Alpha
+ */
 public class OpCheckCommandExecutor implements CommandExecutor {
-    public XF_Tools Tools;
+    public XF_Tools tools;
     public OpCheckCommandExecutor(XF_Tools plugins) {
-        this.Tools = plugins;
+        this.tools = plugins;
     }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
-        if (command.getName().equalsIgnoreCase("op") || command.getName().equalsIgnoreCase("deop")) {
+        if ("op".equalsIgnoreCase(command.getName()) || "deop".equalsIgnoreCase(command.getName())) {
             if (strings.length == 0) {
                 if (sender.isOp()) {
                     if (sender instanceof ConsoleCommandSender) {
-                        sender.sendMessage(String.format("%s§r%s §r§c此命令被禁止，请使用 §6/xf-op §c查看帮助！", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+                        sender.sendMessage(String.format("%s§r%s §r§c此命令被禁止，请使用 §6/xf-op §c查看帮助！", tools.xfPrefix, tools.xfPrefixArrow));
                     } else {
-                        sender.sendMessage(String.format("%s§r%s §r§c我不建议你赋予管理员！", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+                        sender.sendMessage(String.format("%s§r%s §r§c我不建议你赋予管理员！", tools.xfPrefix, tools.xfPrefixArrow));
                     }
                 } else {
-                    sender.sendMessage(String.format("%s§r%s §r§c你可不是管理员哦！这个指令不要用，别怪我没提醒你！", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+                    sender.sendMessage(String.format("%s§r%s §r§c你可不是管理员哦！这个指令不要用，别怪我没提醒你！", tools.xfPrefix, tools.xfPrefixArrow));
                 }
             } else {
                 if (sender instanceof ConsoleCommandSender) {
-                    sender.sendMessage(String.format("%s§r%s §r§c此命令被禁止，请使用 §6/xf-op §c查看帮助！", Tools.XF_Prefix, Tools.XF_PrefixArrow));
+                    sender.sendMessage(String.format("%s§r%s §r§c此命令被禁止，请使用 §6/xf-op §c查看帮助！", tools.xfPrefix, tools.xfPrefixArrow));
                 } else {
                     Player player = (Player) sender;
-                    sender.sendMessage(String.format("%s§r%s §r§c禁止游戏内赋予管理员！此命令被禁止", Tools.XF_Prefix, Tools.XF_PrefixArrow));
-                    if (sender.isOp())
-                        player.kickPlayer(String.format("§7[%s§7] §r§c我跟你说过了，服务器内不允许赋予OP", Tools.XF_Prefix));
-                    else
-                        player.kickPlayer(String.format("§7[%s§7] §r§c我跟你说过了，服务器内不允许赋予OP，何况你也不是OP", Tools.XF_Prefix));
+                    sender.sendMessage(String.format("%s§r%s §r§c禁止游戏内赋予管理员！此命令被禁止", tools.xfPrefix, tools.xfPrefixArrow));
+                    if (sender.isOp()) {
+                        player.kickPlayer(String.format("§7[%s§7] §r§c我跟你说过了，服务器内不允许赋予OP", tools.xfPrefix));
+                    } else {
+                        player.kickPlayer(String.format("§7[%s§7] §r§c我跟你说过了，服务器内不允许赋予OP，何况你也不是OP", tools.xfPrefix));
+                    }
                 }
             }
         }
