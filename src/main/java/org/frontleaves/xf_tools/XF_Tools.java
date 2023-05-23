@@ -6,13 +6,12 @@ import org.frontleaves.xf_tools.Commands.OpCheckCommandExecutor;
 import org.frontleaves.xf_tools.Commands.XfDropCommandExecutor;
 import org.frontleaves.xf_tools.Commands.XfOpCommandExecutor;
 import org.frontleaves.xf_tools.Events.BlockEvent;
+import org.frontleaves.xf_tools.Events.CommandEvent;
 import org.frontleaves.xf_tools.Events.DropEvent;
 import org.frontleaves.xf_tools.Events.PlayerActivityListener;
 import org.frontleaves.xf_tools.Others.DataBaseCreate;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public final class XF_Tools extends JavaPlugin {
     public boolean UseSQL = false;
     public Connection SqlConn;
     public Statement Stmt;
-
+    public List<String> BlockBanList = new ArrayList<>();
     @Override
     public void onEnable() {
         // 载入指令
@@ -44,27 +43,17 @@ public final class XF_Tools extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerActivityListener(this), this);
         getServer().getPluginManager().registerEvents(new BlockEvent(this), this);
         getServer().getPluginManager().registerEvents(new DropEvent(this), this);
+        getServer().getPluginManager().registerEvents(new CommandEvent(this),this);
 
         // 输出配置文件
         saveDefaultConfig();
+        // 获取配置文件
+        this.BlockBanList = getConfig().getStringList("BanBlock_List");
 
         // 数据库配置部分
         if (getConfig().getBoolean("Mysql_Open")) {
-            try {
-                Class.forName("com.mysql.jdbc.Driver");
-                this.SqlConn = DriverManager.getConnection("jdbc:mysql://"+getConfig().getString("Mysql_Host")+":"+getConfig().getInt("Mysql_Port")+"/?useSSL="+getConfig().getString("Mysql_SSL"),getConfig().getString("Mysql_User"),getConfig().getString("Mysql_Password"));
-                this.Stmt = this.SqlConn.createStatement();
-                this.UseSQL = true;
-                getLogger().info("数据库已成功连接！");
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (SQLException e) {
-                getLogger().warning("数据库无法连接，已禁止使用数据库！");
-            }
-            DataBaseCreate DataCheck = new DataBaseCreate(this);
-            if (DataCheck.Create()) {
-                getLogger().info("创建数据表");
-            }
+            DataBaseCreate dataBaseCreate = new DataBaseCreate(this);
+            dataBaseCreate.CreateTable();
         }
 
         // 信息输出
