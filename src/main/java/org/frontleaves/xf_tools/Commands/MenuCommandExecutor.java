@@ -8,7 +8,6 @@ import org.frontleaves.xf_tools.XF_Tools;
 import java.util.Objects;
 
 public class MenuCommandExecutor implements CommandExecutor {
-
     public XF_Tools Tools;
     public MenuCommandExecutor(XF_Tools Tools) {
         this.Tools = Tools;

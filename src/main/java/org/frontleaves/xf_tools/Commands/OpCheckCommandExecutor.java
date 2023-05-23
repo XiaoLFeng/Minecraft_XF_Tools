@@ -8,13 +8,10 @@ import org.bukkit.entity.Player;
 import org.frontleaves.xf_tools.XF_Tools;
 
 public class OpCheckCommandExecutor implements CommandExecutor {
-
     public XF_Tools Tools;
-
     public OpCheckCommandExecutor(XF_Tools plugins) {
         this.Tools = plugins;
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (command.getName().equalsIgnoreCase("op") || command.getName().equalsIgnoreCase("deop")) {
